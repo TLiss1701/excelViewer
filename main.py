@@ -48,13 +48,11 @@ class Window2(QWidget):
         self.setLayout(self.layout)
 
     def setColumn(self):
-        print(list(self.df[self.selectColumn.text()]))
         self.indicies = list(self.df[self.selectColumn.text()])
         self.idxComp = QCompleter(self.indicies)
         self.selectIndex.setCompleter(self.idxComp)
 
     def setIndex(self):
-        print(self.selectColumn.text())
         self.dispdf = self.df.loc[self.df[self.selectColumn.text()] == self.selectIndex.text()]
         self.dispdf = self.dispdf.drop(columns=[self.selectColumn.text()])
         for x in range(len(self.df.columns)-1):
