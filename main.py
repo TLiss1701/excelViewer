@@ -1,5 +1,6 @@
 import pandas
 import sys
+#pylint: disable=no-name-in-module
 from PyQt5.QtWidgets import QApplication, QGridLayout, QVBoxLayout, QHBoxLayout, QPushButton, QWidget, QLabel, QLineEdit, QFileDialog, QStackedLayout, QCompleter
 from PyQt5 import QtCore
 
@@ -7,6 +8,7 @@ class Window2(QWidget):
     def __init__(self, fileName):
         super().__init__()
         self.df = pandas.read_excel(fileName)
+        self.df = self.df.applymap(str)
 
         self.setWindowTitle("Excel Viewer")
         #Second Page Layout
@@ -94,6 +96,7 @@ class Window(QWidget):
     def switchPage(self):
         if self.w is None:
             self.w = Window2(self.fileName)
+            self.hide()
             self.w.show()
 
         else:
