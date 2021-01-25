@@ -3,6 +3,7 @@ import sys
 #pylint: disable=no-name-in-module
 from PyQt5.QtWidgets import QApplication, QGridLayout, QVBoxLayout, QHBoxLayout, QPushButton, QWidget, QLabel, QLineEdit, QFileDialog, QStackedLayout, QCompleter
 from PyQt5 import QtCore
+from fbs_runtime.application_context.PyQt5 import ApplicationContext
 
 class Window2(QWidget):
     def __init__(self, fileName):
@@ -105,7 +106,7 @@ class Window(QWidget):
 
 
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
+    appctxt = ApplicationContext()
     window = Window()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(appctxt.app.exec_())
