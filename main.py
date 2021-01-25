@@ -36,9 +36,14 @@ class Window2(QWidget):
         self.layout.addLayout(self.indexPicker)
         #Show all Data
         self.dataTable = QGridLayout()
+        self.rowTitles = []
+        self.rowData = []
         for x in range(len(self.df.columns)-1):
-            self.dataTable.addWidget(QLabel("Row Title " + str(x)), x, 1)
-            self.dataTable.addWidget(QLabel("Row Data " + str(x)), x, 2)
+            self.rowTitles.append(QLabel("Row Title " + str(x)))
+            self.rowData.append(QLabel("Row Data " + str(x)))
+        for x in range(len(self.df.columns)-1):
+            self.dataTable.addWidget(self.rowTitles[x], x, 1)
+            self.dataTable.addWidget(self.rowData[x], x, 2)
         self.layout.addLayout(self.dataTable)
         self.setLayout(self.layout)
 
@@ -48,11 +53,13 @@ class Window2(QWidget):
         self.idxComp = QCompleter(self.indicies)
         self.selectIndex.setCompleter(self.idxComp)
 
-
     def setIndex(self):
         print(self.selectColumn.text())
-        self.dispdf = self.df.drop(columns=[self.selectColumn.text()])
-        print(self.dispdf)
+        self.dispdf = self.df.loc[self.df[self.selectColumn.text()] == self.selectIndex.text()]
+        self.dispdf = self.dispdf.drop(columns=[self.selectColumn.text()])
+        for x in range(len(self.df.columns)-1):
+            self.rowTitles[x].setText(self.dispdf.columns[x] + ":")
+            self.rowData[x].setText(self.dispdf.iat[0, x])
 
 class Window(QWidget):
     def __init__(self):
@@ -98,6 +105,6 @@ class Window(QWidget):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = Window2(r"C:\Users\TLiss\Desktop\test_data.xlsx") #Remove Later
+    window = Window()
     window.show()
     sys.exit(app.exec_())
