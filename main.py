@@ -1,32 +1,58 @@
 import pandas
 import sys
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtWidgets import QGridLayout
-from PyQt5.QtWidgets import QVBoxLayout
-from PyQt5.QtWidgets import QHBoxLayout
-from PyQt5.QtWidgets import QPushButton
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtWidgets import QLabel
-from PyQt5.QtWidgets import QLineEdit
-from PyQt5.QtWidgets import QFileDialog
-from PyQt5.QtWidgets import QStackedLayout
+from PyQt5.QtWidgets import QApplication, QGridLayout, QVBoxLayout, QHBoxLayout, QPushButton, QWidget, QLabel, QLineEdit, QFileDialog, QStackedLayout, QCompleter
 from PyQt5 import QtCore
 
 class Window2(QWidget):
     def __init__(self, fileName):
         super().__init__()
-
-        df = pandas.read_excel(fileName)
-        print(df)
+        self.df = pandas.read_excel(fileName)
 
         self.setWindowTitle("Excel Viewer")
         #Second Page Layout
-        self.page2Layout = QVBoxLayout()
-        #TODO - Make 2nd Page#
-        self.fileLabel = QLabel("Test" + fileName)
-        self.page2Layout.addWidget(self.fileLabel)
-        ###
-        self.setLayout(self.page2Layout)
+        self.layout = QVBoxLayout()
+        #Pick What Column to Filter Off Of
+        self.columnPicker = QHBoxLayout()
+        self.columnPicker.addWidget(QLabel("Column:"))
+        self.columns = list(self.df.columns)
+        self.colComp = QCompleter(self.columns)
+        self.selectColumn = QLineEdit()
+        self.selectColumn.setCompleter(self.colComp)
+        self.columnPicker.addWidget(self.selectColumn)
+        self.colButton = QPushButton("Set Column")
+        self.columnPicker.addWidget(self.colButton)
+        self.colButton.clicked.connect(self.setColumn)
+        self.layout.addLayout(self.columnPicker)
+        #Pick What Row in Column to Show Data Off Of
+        self.indexPicker = QHBoxLayout()
+        self.indexPicker.addWidget(QLabel("Element:"))
+        self.idxComp = QCompleter([])
+        self.selectIndex = QLineEdit()
+        self.selectIndex.setCompleter(self.idxComp)
+        self.indexPicker.addWidget(self.selectIndex)
+        self.idxButton = QPushButton("Set Index")
+        self.indexPicker.addWidget(self.idxButton)
+        self.idxButton.clicked.connect(self.setIndex)
+        self.layout.addLayout(self.indexPicker)
+        #Show all Data
+        self.dataTable = QGridLayout()
+        for x in range(len(self.df.columns)-1):
+            self.dataTable.addWidget(QLabel("Row Title " + str(x)), x, 1)
+            self.dataTable.addWidget(QLabel("Row Data " + str(x)), x, 2)
+        self.layout.addLayout(self.dataTable)
+        self.setLayout(self.layout)
+
+    def setColumn(self):
+        print(list(self.df[self.selectColumn.text()]))
+        self.indicies = list(self.df[self.selectColumn.text()])
+        self.idxComp = QCompleter(self.indicies)
+        self.selectIndex.setCompleter(self.idxComp)
+
+
+    def setIndex(self):
+        print(self.selectColumn.text())
+        self.dispdf = self.df.drop(columns=[self.selectColumn.text()])
+        print(self.dispdf)
 
 class Window(QWidget):
     def __init__(self):
