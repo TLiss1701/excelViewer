@@ -1,9 +1,10 @@
 import pandas
 import sys
 #pylint: disable=no-name-in-module
-from PyQt5.QtWidgets import QApplication, QGridLayout, QVBoxLayout, QHBoxLayout, QPushButton, QWidget, QLabel, QLineEdit, QFileDialog, QStackedLayout, QCompleter
+from PyQt5.QtWidgets import QApplication, QGridLayout, QVBoxLayout, QHBoxLayout, QPushButton, QWidget, QLabel, QLineEdit, QFileDialog, QStackedLayout, QCompleter, QComboBox
 from PyQt5 import QtCore
-from fbs_runtime.application_context.PyQt5 import ApplicationContext
+#For Export
+#from fbs_runtime.application_context.PyQt5 import ApplicationContext
 
 class Window2(QWidget):
     def __init__(self, fileName):
@@ -106,7 +107,13 @@ class Window(QWidget):
 
 
 if __name__ == "__main__":
-    appctxt = ApplicationContext()
+    #For Export
+    #appctxt = ApplicationContext()
+    #For Testing
+    app = QApplication([])
     window = Window()
     window.show()
-    sys.exit(appctxt.app.exec_())
+    #For Export
+    #sys.exit(appctxt.app.exec_())
+    #For Testing
+    sys.exit(app.exec_())
