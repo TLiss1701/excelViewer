@@ -19,24 +19,18 @@ class Window2(QWidget):
         self.columnPicker = QHBoxLayout()
         self.columnPicker.addWidget(QLabel("Column:"))
         self.columns = list(self.df.columns)
-        self.colComp = QCompleter(self.columns)
-        self.selectColumn = QLineEdit()
-        self.selectColumn.setCompleter(self.colComp)
+        self.selectColumn = QComboBox()
+        self.selectColumn.setEditable(True)
+        self.selectColumn.addItems(self.columns)
         self.columnPicker.addWidget(self.selectColumn)
-        self.colButton = QPushButton("Set Column")
-        self.columnPicker.addWidget(self.colButton)
-        self.colButton.clicked.connect(self.setColumn)
+        self.selectColumn.activated.connect(self.setColumn)
         self.layout.addLayout(self.columnPicker)
         #Pick What Row in Column to Show Data Off Of
         self.indexPicker = QHBoxLayout()
         self.indexPicker.addWidget(QLabel("Element:"))
-        self.idxComp = QCompleter([])
-        self.selectIndex = QLineEdit()
-        self.selectIndex.setCompleter(self.idxComp)
+        self.selectIndex = QComboBox()
         self.indexPicker.addWidget(self.selectIndex)
-        self.idxButton = QPushButton("Set Index")
-        self.indexPicker.addWidget(self.idxButton)
-        self.idxButton.clicked.connect(self.setIndex)
+        self.selectIndex.activated.connect(self.setIndex)
         self.layout.addLayout(self.indexPicker)
         #Show all Data
         self.dataTable = QGridLayout()
@@ -52,13 +46,13 @@ class Window2(QWidget):
         self.setLayout(self.layout)
 
     def setColumn(self):
-        self.indicies = list(self.df[self.selectColumn.text()])
-        self.idxComp = QCompleter(self.indicies)
-        self.selectIndex.setCompleter(self.idxComp)
+        self.indicies = list(self.df[self.selectColumn.currentText()])
+        self.selectIndex.clear()
+        self.selectIndex.addItems(self.indicies)
 
     def setIndex(self):
-        self.dispdf = self.df.loc[self.df[self.selectColumn.text()] == self.selectIndex.text()]
-        self.dispdf = self.dispdf.drop(columns=[self.selectColumn.text()])
+        self.dispdf = self.df.loc[self.df[self.selectColumn.currentText()] == self.selectIndex.currentText()]
+        self.dispdf = self.dispdf.drop(columns=[self.selectColumn.currentText()])
         for x in range(len(self.df.columns)-1):
             self.rowTitles[x].setText(self.dispdf.columns[x] + ":")
             self.rowData[x].setText(self.dispdf.iat[0, x])
