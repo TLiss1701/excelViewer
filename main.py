@@ -1,12 +1,13 @@
 import pandas
 import sys
 #pylint: disable=no-name-in-module
-from PyQt5.QtWidgets import QApplication, QGridLayout, QVBoxLayout, QHBoxLayout, QPushButton, QWidget, QLabel, QLineEdit, QFileDialog, QStackedLayout, QCompleter, QComboBox, QErrorMessage, QMessageBox
+from PyQt5.QtWidgets import QApplication, QGridLayout, QVBoxLayout, QHBoxLayout, QPushButton, QWidget, QLabel, QLineEdit, QFileDialog, QStackedLayout, QCompleter, QComboBox, QErrorMessage, QMessageBox, QMainWindow, QMenu, QAction
 from PyQt5 import QtCore
+from PyQt5.QtGui import QFont
 #For Export
 #from fbs_runtime.application_context.PyQt5 import ApplicationContext
 
-class Window2(QWidget):
+class Window2(QMainWindow):
     def __init__(self, fileName):
         super().__init__()
         self.df = pandas.read_excel(fileName)
@@ -45,10 +46,80 @@ class Window2(QWidget):
             self.rowTitles.append(QLabel(""))
             self.rowData.append(QLabel(""))
         for x in range(len(self.df.columns)-1):
+            self.rowData[x].setFont(QFont("Courier New", 10))
+        for x in range(len(self.df.columns)-1):
             self.dataTable.addWidget(self.rowTitles[x], x, 1)
             self.dataTable.addWidget(self.rowData[x], x, 2)
         self.layout.addLayout(self.dataTable)
-        self.setLayout(self.layout)
+        self.widget = QWidget()
+        self.widget.setLayout(self.layout)
+        self.setCentralWidget(self.widget)
+        self.setMinimumWidth(600)
+        self.createMenuBar()
+
+    def createMenuBar(self):
+        #TODO - Implement Actions
+        self.currentFont = "Courier New"
+        self.currentSize = 10
+        menuBar = self.menuBar()
+        fileMenu = menuBar.addMenu("&File")
+        self.exitAction = QAction("Exit")
+        self.exitAction.triggered.connect(self.exitApp)
+        fileMenu.addAction(self.exitAction)
+        viewMenu = menuBar.addMenu("&View")
+        self.fontMenu = QMenu("Change Font")
+        self.TimesNewRoman = QAction("Times New Roman")
+        self.TimesNewRoman.setFont(QFont("Times New Roman"))
+        self.TimesNewRoman.triggered.connect(lambda: self.fontSetter("Times New Roman"))
+        self.fontMenu.addAction(self.TimesNewRoman)
+        self.Verdana = QAction("Verdana")
+        self.Verdana.setFont(QFont("Verdana"))
+        self.Verdana.triggered.connect(lambda: self.fontSetter("Verdana"))
+        self.fontMenu.addAction(self.Verdana)
+        self.Helvetica = QAction("Helvetica")
+        self.Helvetica.setFont(QFont("Helvetica"))
+        self.Helvetica.triggered.connect(lambda: self.fontSetter("Helvetica"))
+        self.fontMenu.addAction(self.Helvetica)
+        self.CourierNew = QAction("Courier New")
+        self.CourierNew.setFont(QFont("Courier New"))
+        self.CourierNew.triggered.connect(lambda: self.fontSetter("Courier New"))
+        self.fontMenu.addAction(self.CourierNew)
+        viewMenu.addMenu(self.fontMenu)
+        self.fontSizeMenu = QMenu("Font Size")
+        self.fs10 = QAction("10")
+        self.fs10.triggered.connect(lambda: self.fontSizeSetter(10))
+        self.fontSizeMenu.addAction(self.fs10)
+        self.fs12 = QAction("12")
+        self.fs12.triggered.connect(lambda: self.fontSizeSetter(12))
+        self.fontSizeMenu.addAction(self.fs12)
+        self.fs15 = QAction("15")
+        self.fs15.triggered.connect(lambda: self.fontSizeSetter(15))
+        self.fontSizeMenu.addAction(self.fs15)
+        self.fs20 = QAction("20")
+        self.fs20.triggered.connect(lambda: self.fontSizeSetter(20))
+        self.fontSizeMenu.addAction(self.fs20)
+        self.fs25 = QAction("25")
+        self.fs25.triggered.connect(lambda: self.fontSizeSetter(25))
+        self.fontSizeMenu.addAction(self.fs25)
+        viewMenu.addMenu(self.fontSizeMenu)
+        helpMenu = menuBar.addMenu("&Help")
+        self.helpContentAction = QAction("Help Content")
+        helpMenu.addAction(self.helpContentAction)
+        self.aboutAction = QAction("About")
+        helpMenu.addAction(self.aboutAction)
+
+    def exitApp(self):
+        sys.exit()
+
+    def fontSetter(self, font):
+        self.currentFont = font
+        for x in range(len(self.df.columns)-1):
+            self.rowData[x].setFont(QFont(font, self.currentSize))
+
+    def fontSizeSetter(self, size):
+        self.currentSize = size
+        for x in range(len(self.df.columns)-1):
+            self.rowData[x].setFont(QFont(self.currentFont, size))
 
     def setColumn(self):
         if self.selectColumn.currentText() == self.oldSelectColumnText and not self.columnInit:
