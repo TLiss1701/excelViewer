@@ -58,7 +58,6 @@ class Window2(QMainWindow):
         self.createMenuBar()
 
     def createMenuBar(self):
-        #TODO - Implement Actions
         self.currentFont = "Courier New"
         self.currentSize = 10
         menuBar = self.menuBar()
@@ -104,12 +103,31 @@ class Window2(QMainWindow):
         viewMenu.addMenu(self.fontSizeMenu)
         helpMenu = menuBar.addMenu("&Help")
         self.helpContentAction = QAction("Help Content")
+        self.helpContentAction.triggered.connect(self.helpWindow)
         helpMenu.addAction(self.helpContentAction)
         self.aboutAction = QAction("About")
+        self.aboutAction.triggered.connect(self.aboutWindow)
         helpMenu.addAction(self.aboutAction)
 
     def exitApp(self):
         sys.exit()
+
+    def helpWindow(self):
+        #TODO - Add help info to text
+        self.helpMsg = QMessageBox()
+        self.helpMsg.setIcon(QMessageBox.Information)
+        self.helpMsg.setWindowTitle("Excel Viewer Help")
+        self.helpMsg.setText('<h2>#TODO: Add Help Info</h2>')
+        self.helpMsg.setStandardButtons(QMessageBox.Ok)
+        self.helpMsg.exec_()
+
+    def aboutWindow(self):
+        self.aboutMsg = QMessageBox()
+        self.aboutMsg.setIcon(QMessageBox.Information)
+        self.aboutMsg.setWindowTitle("About Excel Viewer")
+        self.aboutMsg.setText('<p>Made by Trevor Liss &copy;2021</p><p>For more info, visit <a href="https://github.com/TLiss1701/excelViewer">this project&rsquo;s GitHub</a>.</p>')
+        self.aboutMsg.setStandardButtons(QMessageBox.Ok)
+        self.aboutMsg.exec_()
 
     def fontSetter(self, font):
         self.currentFont = font
