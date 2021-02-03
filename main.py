@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QApplication, QGridLayout, QVBoxLayout, QHBoxLayout,
 from PyQt5 import QtCore
 from PyQt5.QtGui import QFont
 #For Export
-#from fbs_runtime.application_context.PyQt5 import ApplicationContext
+from fbs_runtime.application_context.PyQt5 import ApplicationContext
 
 class Window2(QMainWindow):
     def __init__(self, fileName):
@@ -128,7 +128,7 @@ class Window2(QMainWindow):
         self.aboutMsg = QMessageBox()
         self.aboutMsg.setIcon(QMessageBox.Information)
         self.aboutMsg.setWindowTitle("About Excel Viewer")
-        self.aboutMsg.setText('<p>Made by Trevor Liss &copy;2021</p><p>For more info, visit <a href="https://github.com/TLiss1701/excelViewer">this project&rsquo;s GitHub</a>.</p><hr /><h6>Any Questions, Comments, or Concerns? Email me at <a href="mailto: tliss1701@gmail.com">tliss1701@gmail.com</a>.</h6>')
+        self.aboutMsg.setText('<p>Made by Trevor Liss &copy;2021</p><p>Version 0.2</p><p>For more info, visit <a href="https://github.com/TLiss1701/excelViewer">this project&rsquo;s GitHub</a>.</p><hr /><h6>Any Questions, Comments, or Concerns? Email me at <a href="mailto: tliss1701@gmail.com">tliss1701@gmail.com</a>.</h6>')
         self.aboutMsg.setStandardButtons(QMessageBox.Ok)
         self.aboutMsg.exec_()
 
@@ -257,12 +257,12 @@ class Window(QWidget):
 
 if __name__ == "__main__":
     #For Export
-    #appctxt = ApplicationContext()
+    appctxt = ApplicationContext()
     #For Testing
-    app = QApplication([])
+    #app = QApplication([])
     window = Window()
     window.show()
     #For Export
-    #sys.exit(appctxt.app.exec_())
+    sys.exit(appctxt.app.exec_())
     #For Testing
-    sys.exit(app.exec_())
+    #sys.exit(app.exec_())
