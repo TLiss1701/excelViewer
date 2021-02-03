@@ -116,11 +116,11 @@ class Window2(QMainWindow):
         sys.exit()
 
     def helpWindow(self):
-        #TODO - Add help info to text
         self.helpMsg = QMessageBox()
         self.helpMsg.setIcon(QMessageBox.Information)
         self.helpMsg.setWindowTitle("Excel Viewer Help")
-        self.helpMsg.setText('<h2>#TODO: Add Help Info</h2>')
+        self.helpMsg.setText('<h2>How to Use:</h2><p>To use <strong>Excel Viewer</strong>:</p><ul><li>First, pick a column from the "Column" dropdown menu. <ul><li>This will set the column of data to choose the element of interest from.</li><li>Please choose a column that is unique (ie: an ID or Name Column).</li></ul></li><li>Then, select an element from that column whose data you would like to have displayed from the "Element" dropdown menu.</li><li>Then, all of the data for that row will be displayed.</li><li>To change font or text size, navigate to the options under the "View" Menu.</li></ul><hr /><h6>Any Questions, Comments, or Concerns? See the <strong>About</strong> page (under the "Help" Menu) for contact information.</h6>')
+        self.helpMsg.setStyleSheet("width: 1000%")
         self.helpMsg.setStandardButtons(QMessageBox.Ok)
         self.helpMsg.exec_()
 
@@ -128,7 +128,7 @@ class Window2(QMainWindow):
         self.aboutMsg = QMessageBox()
         self.aboutMsg.setIcon(QMessageBox.Information)
         self.aboutMsg.setWindowTitle("About Excel Viewer")
-        self.aboutMsg.setText('<p>Made by Trevor Liss &copy;2021</p><p>For more info, visit <a href="https://github.com/TLiss1701/excelViewer">this project&rsquo;s GitHub</a>.</p>')
+        self.aboutMsg.setText('<p>Made by Trevor Liss &copy;2021</p><p>For more info, visit <a href="https://github.com/TLiss1701/excelViewer">this project&rsquo;s GitHub</a>.</p><hr /><h6>Any Questions, Comments, or Concerns? Email me at <a href="mailto: tliss1701@gmail.com">tliss1701@gmail.com</a>.</h6>')
         self.aboutMsg.setStandardButtons(QMessageBox.Ok)
         self.aboutMsg.exec_()
 
