@@ -10,7 +10,10 @@ from PyQt5.QtGui import QFont
 class Window2(QMainWindow):
     def __init__(self, fileName):
         super().__init__()
-        self.df = pandas.read_excel(fileName)
+        if fileName != "" and fileName[-4:] == ".csv":
+            self.df = pandas.read_csv(fileName)
+        else:
+            self.df = pandas.read_excel(fileName)
         self.df = self.df.applymap(str)
 
         self.setWindowTitle("Excel Viewer")
@@ -231,11 +234,11 @@ class Window(QWidget):
         self.setLayout(self.stackedLayout)
 
     def getFiles(self):
-        self.fileName, _ = QFileDialog.getOpenFileName(self, 'Single File', QtCore.QDir.rootPath() , '*.xlsx')
+        self.fileName, _ = QFileDialog.getOpenFileName(self, 'Single File', QtCore.QDir.rootPath() , '*.xlsx;;*.csv')
         self.fileLineEdit.setText(self.fileName)
 
     def switchPage(self):
-        if self.fileName != "" and self.fileName[-5:] == ".xlsx":
+        if self.fileName != "" and (self.fileName[-5:] == ".xlsx" or self.fileName[-4:] == ".csv"):
             if self.w is None:
                 self.w = Window2(self.fileName)
                 self.hide()
@@ -247,7 +250,7 @@ class Window(QWidget):
             self.fileError = QMessageBox()
             self.fileError.setIcon(QMessageBox.Critical)
             self.fileError.setWindowTitle("File Error")
-            self.fileError.setText('<h3>Your selected file is not an Excel File.</h3><h4> Please ensure the selected file ends with ".xlsx" and try again.</h4>')
+            self.fileError.setText('<h3>Your selected file is not an Excel File or a CSV File.</h3><h4> Please ensure the selected file ends with ".xlsx" and try again.</h4>')
             self.fileError.setStandardButtons(QMessageBox.Ok)
             self.fileError.exec_()
 
