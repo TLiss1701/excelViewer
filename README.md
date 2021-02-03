@@ -8,7 +8,7 @@ In order to Install Excel Viewer on your local device, download <a id="raw-url" 
 
 ## Getting Started with Development
 
-The entire program is built in ```qtpy5``` and is stored in one python file, ```main.py```. 
+The entire program is built in ```PyQt5``` and is stored in one python file, ```main.py```. 
 In order to get the python file running out of the context of the fbs project structure, comment out all lines directly below ```#For Export``` and uncomment all lines directly below ```#For Testing```.
 
 ### Packaging into a .exe and installer
